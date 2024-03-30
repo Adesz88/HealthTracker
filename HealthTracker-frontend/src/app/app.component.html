@@ -1,2 +1,13 @@
-<mat-toolbar color="primary"></mat-toolbar>
+<mat-toolbar color="primary">
+  <div id="nav">
+    <ul class="nav-items">
+      <li><a routerLink="/">HealthTracker</a></li>
+    </ul>
+
+    <ul class="nav-items">
+      <!--<li *ngIf="loggedInUser"><a (click)="onLogout()">Kilépés</a></li>
+      <li *ngIf="!loggedInUser"><a routerLink="/login">Belépés</a></li>-->
+    </ul>
+  </div>
+</mat-toolbar>
 <router-outlet></router-outlet>

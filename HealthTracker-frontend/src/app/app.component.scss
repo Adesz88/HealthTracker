@@ -1,0 +1,21 @@
+a {
+  text-decoration: none;
+  color: white;
+}
+
+a:hover, a:active {
+  color: lightgray;
+}
+
+.nav-items {
+  padding: 0;
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+#nav {
+  width: 2000px;
+  display: flex;
+  justify-content: space-between;
+}
