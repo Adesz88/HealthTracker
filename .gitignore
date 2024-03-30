@@ -1,0 +1,17 @@
+
+.DS_Store
+HealthTracker_backend/.idea/
+HealthTracker_backend/node_modules
+*.bkp
+HealthTracker_backend/package-lock.json
+HealthTracker_backend/package-lock.json
+HealthTracker_backend/.env
+HealthTracker_backend/menu.jpeg
+HealthTracker_frontend/.editorconfig
+HealthTracker_frontend/.vscode/*
+HealthTracker_frontend/node_modules
+!HealthTracker_frontend/.vscode/settings.json
+!HealthTracker_frontend/.vscode/tasks.json
+!HealthTracker_frontend/.vscode/launch.json
+!HealthTracker_frontend/.vscode/extensions.json
+*/.vscode
