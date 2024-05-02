@@ -1,27 +1,51 @@
 <span class="card-span">
   <mat-card>
     <mat-card-header>
-      <mat-card-title>Regisztráció</mat-card-title>
+      <mat-card-title>Sign up</mat-card-title>
     </mat-card-header>
 
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
       <mat-card-content>
         <mat-form-field>
-          <mat-label>Email cím</mat-label>
+          <mat-label>First name</mat-label>
+          <input matInput type="text" formControlName="firstname">
+          <!--<mat-error>{{emptyError}}</mat-error>-->
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Last name</mat-label>
+          <input matInput type="text" formControlName="lastname">
+          <!--<mat-error>{{emptyError}}</mat-error>-->
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Birth date</mat-label>
+          <input matInput type="date" formControlName="birthDate">
+          <!--<mat-error>{{emptyError}}</mat-error>-->
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Birth place</mat-label>
+          <input matInput type="text" formControlName="birthPlace">
+          <!--<mat-error>{{emptyError}}</mat-error>-->
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Phone</mat-label>
+          <input matInput type="phone" formControlName="phone">
+          <!--<mat-error>{{emptyError}}</mat-error>-->
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Email</mat-label>
           <input matInput type="email" formControlName="email">
           <!--<mat-error>{{formatError}}</mat-error>-->
         </mat-form-field>
-
         <mat-form-field>
-          <mat-label>Jelszó</mat-label>
+          <mat-label>Password</mat-label>
           <input matInput type="password" formControlName="password">
           <!--<mat-error>{{emptyError}}</mat-error>-->
         </mat-form-field>
       </mat-card-content>
 
       <mat-card-actions>
-        <button mat-raised-button color="primary" type="submit">Regisztráció</button>
-        <button mat-raised-button color="secondary" type="button" [routerLink]="'/login'">Belépés</button>
+        <button mat-raised-button color="primary" type="submit">Sign up</button>
+        <button mat-raised-button color="secondary" type="button" [routerLink]="'/login'">Login</button>
       </mat-card-actions>
     </form>
   </mat-card>
