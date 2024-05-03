@@ -6,11 +6,22 @@ const bcrypt = require("bcrypt");
 
 function initialize(passport: PassportStatic) {
   const authenticateUser = (email: string, password: string, done: any) => {
-    if (email === 'test@test.com' && password === 'testpw') {
-      done(null, new User(email, password));
-    } else {
-      done('Incorrect username or password.');
-    }
+    const query = User.findOne({ email: email });
+    query.then(user => {
+      if (user) {
+        user.comparePassword(password, (error, _) => {
+          if (error) {
+            done('Incorrect username or password.');
+          } else {
+            done(null, user._id);
+          }
+        });
+      } else {
+        done(null, undefined);
+      }
+    }).catch(error => {
+      done(error);
+    })
   };
 
   passport.use(new LocalStrategy({usernameField: "email"}, authenticateUser));
