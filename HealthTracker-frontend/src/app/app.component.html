@@ -5,9 +5,8 @@
     </ul>
 
     <ul class="nav-items">
-      <li><a>Logout</a></li>
-      <!--<li *ngIf="loggedInUser"><a (click)="onLogout()">Kilépés</a></li>
-      <li *ngIf="!loggedInUser"><a routerLink="/login">Belépés</a></li>-->
+      <li *ngIf="isLoggedIn"><a (click)="onLogout()">Logout</a></li>
+      <li *ngIf="!isLoggedIn"><a routerLink="/login">Login</a></li>
     </ul>
   </div>
 </mat-toolbar>

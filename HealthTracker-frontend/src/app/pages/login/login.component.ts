@@ -1,9 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import {MatCardModule} from "@angular/material/card";
-import {FormGroup, ReactiveFormsModule} from "@angular/forms";
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import {MatButtonModule} from "@angular/material/button";
 import {MatInputModule} from "@angular/material/input";
-import {RouterLink} from "@angular/router";
+import { Router, RouterLink } from "@angular/router";
+import { UserToLogin } from "../../shared/models/user";
+import { Subscription } from "rxjs";
+import { AuthService } from "../../shared/services/auth.service";
 
 @Component({
   selector: 'app-login',
@@ -12,11 +15,34 @@ import {RouterLink} from "@angular/router";
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
-export class LoginComponent {
+export class LoginComponent implements OnDestroy{
+  loginSubscription?: Subscription;
+
   loginForm = new FormGroup({
-    /*email: new FormControl("", [Validators.required, Validators.email]),
-    password: new FormControl("", Validators.required)*/
+    email: new FormControl("", [Validators.required, Validators.email]),
+    password: new FormControl("", Validators.required)
   });
 
-  onSubmit() {}
+  constructor(private authService: AuthService, private router: Router) {
+  }
+
+  ngOnDestroy() {
+    this.loginSubscription?.unsubscribe();
+  }
+
+  onSubmit() {
+    console.log(this.loginForm.value)
+    if (this.loginForm.status === "VALID") {
+      const user: UserToLogin = {
+        email: this.loginForm.value.email!,
+        password: this.loginForm.value.password!,
+      }
+
+      this.loginSubscription = this.authService.login(user).subscribe({next: data => {
+        this.router.navigateByUrl("/main");
+      }, error: err => {
+          console.log(err);
+      }});
+    }
+  }
 }
