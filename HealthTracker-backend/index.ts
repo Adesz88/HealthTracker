@@ -1,9 +1,8 @@
 import { Request, Response } from "express";
 import mongoose from "mongoose";
+import { DB_URL } from "./constants";
 
 const express = require('express');
-const dbURL = "mongodb://localhost:6000/health_tracker";
-const bcrypt = require("bcrypt");
 const passport = require("passport");
 const session = require("express-session");
 const cors = require("cors");
@@ -17,7 +16,7 @@ app.use(cors({
 }));
 
 /* mongodb */
-mongoose.connect(dbURL).then((_) => {
+mongoose.connect(DB_URL).then((_) => {
     console.log("connceted to DB");
 }).catch(error => {
     console.log(error);
