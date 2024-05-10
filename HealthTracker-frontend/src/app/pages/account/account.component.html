@@ -1,10 +1,10 @@
 <span class="card-span">
   <mat-card>
     <mat-card-header>
-      <mat-card-title>Sign up</mat-card-title>
+      <mat-card-title>My account</mat-card-title>
     </mat-card-header>
 
-    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="accountForm" (ngSubmit)="onSubmit()">
       <mat-card-content>
         <mat-form-field>
           <mat-label>First name</mat-label>
@@ -37,20 +37,28 @@
           <!--<mat-error>{{emptyError}}</mat-error>-->
         </mat-form-field>
         <mat-form-field>
+          <mat-label>Doctor</mat-label>
+          <mat-select formControlName="doctor">
+            <mat-option [value]="null">Not selected</mat-option>
+            <mat-option *ngFor="let doctor of doctors" [value]="doctor._id">
+              {{doctor.firstName + " " + doctor.lastName}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <!--<mat-form-field>
           <mat-label>Password</mat-label>
           <input matInput type="password" formControlName="password">
-          <!--<mat-error>{{emptyError}}</mat-error>-->
+          <mat-error>{{emptyError}}</mat-error>
         </mat-form-field>
         <mat-form-field>
           <mat-label>Password again</mat-label>
           <input matInput type="password" formControlName="rePassword">
-          <!--<mat-error>{{emptyError}}</mat-error>-->
-        </mat-form-field>
+          <mat-error>{{emptyError}}</mat-error>
+        </mat-form-field>-->
       </mat-card-content>
 
       <mat-card-actions>
-        <button mat-raised-button color="primary" type="submit">Sign up</button>
-        <button mat-raised-button color="secondary" type="button" [routerLink]="'/login'">Login</button>
+        <button mat-raised-button color="primary" type="submit">Update</button>
       </mat-card-actions>
     </form>
   </mat-card>

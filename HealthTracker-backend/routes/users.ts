@@ -1,5 +1,5 @@
 import {NextFunction, Request, Response} from "express";
-import {PassportStatic, use} from "passport";
+import {PassportStatic} from "passport";
 
 import { User } from "../shared/model/user";
 import { ROLES } from "../constants";
@@ -50,7 +50,8 @@ module.exports = function (passport: PassportStatic) {
         lastName: req.body.lastName,
         phone: req.body.phone,
         birthPlace: req.body.birthPlace,
-        BirthDate: req.body.birthDate
+        birthDate: req.body.birthDate,
+        doctorId: null
       });
       user.save().then(data => {
         res.status(200).send(data);
@@ -60,6 +61,43 @@ module.exports = function (passport: PassportStatic) {
     } else {
       return res.status(404).send("This email is already in use.");
     }
+  });
+
+  router.get("/current", isAuthenticated, (req: Request, res: Response) => {
+    const query = User.findById(req.user).select({ password: false,  __v: false});
+    query.then(user => {
+      return res.status(200).send(user);
+    }).catch(error => {
+      return res.status(404).send("Cannot find user");
+    });
+  });
+
+  router.put("/current", isAuthenticated, (req: Request, res: Response) => {
+    if (req.body) {
+      const query = User.findByIdAndUpdate(req.user, {
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        email: req.body.email,
+        birthPlace: req.body.birthPlace,
+        birthDate: req.body.birthDate,
+        phone: req.body.phone,
+        doctorId: req.body.doctorId
+      }, {returnDocument: "after"});
+      query.then(user => {
+        return res.status(200).send(user);
+      }).catch(error => {
+        return res.status(400).send("Error during update");
+      });
+    }
+  });
+
+  router.get("/doctors", isAuthenticated, (req: Request, res: Response) => {
+    const query = User.find({ role: ROLES.DOCTOR }).select("firstName lastName _id");
+    query.then(doctors => {
+      return res.status(200).send(doctors);
+    }).catch(error => {
+      return res.status(404).send("Cannot find doctors");
+    });
   });
 
   router.get("/list", isAuthenticated, (req: Request, res: Response, next: NextFunction) => {

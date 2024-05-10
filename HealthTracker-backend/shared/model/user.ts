@@ -1,17 +1,17 @@
-import mongoose, {Document, Model, mongo, Schema} from "mongoose";
+import mongoose, {Document, Model, Schema} from "mongoose";
 import bcrypt from "bcrypt";
 
 interface IUser extends Document {
-  email: string;
+  email: string,
   password: string,
-  role: number;
-  firstName: string;
-  lastName: string;
-  phone: string;
-  birthPlace: string;
-  BirthDate: Date;
-  doctorId: string;
-  comparePassword: (receivedPassword: string, callback: (error: Error | null, isMatch: boolean) => void) => void;
+  role: number,
+  firstName: string,
+  lastName: string,
+  phone: string,
+  birthPlace: string,
+  birthDate: Date,
+  doctorId: string,
+  comparePassword: (receivedPassword: string, callback: (error: Error | null, isMatch: boolean) => void) => void
 }
 
 const UserSchema: Schema<IUser> = new mongoose.Schema({
@@ -22,7 +22,7 @@ const UserSchema: Schema<IUser> = new mongoose.Schema({
   lastName: { type: String, required: true },
   phone: { type: String, required: true },
   birthPlace: { type: String, required: true },
-  BirthDate: { type: Date, required: true },
+  birthDate: { type: Date, required: true },
   doctorId: { type: String },
 });
 

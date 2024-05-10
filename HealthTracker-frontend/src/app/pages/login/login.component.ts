@@ -1,12 +1,13 @@
 import { Component, OnDestroy } from '@angular/core';
-import {MatCardModule} from "@angular/material/card";
+import { MatCardModule } from "@angular/material/card";
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
-import {MatButtonModule} from "@angular/material/button";
-import {MatInputModule} from "@angular/material/input";
+import { MatButtonModule} from "@angular/material/button";
+import { MatInputModule } from "@angular/material/input";
 import { Router, RouterLink } from "@angular/router";
 import { UserToLogin } from "../../shared/models/user";
 import { Subscription } from "rxjs";
 import { AuthService } from "../../shared/services/auth.service";
+import { NotificationComponent } from "../../shared/components/notification/notification.component";
 
 @Component({
   selector: 'app-login',
@@ -23,26 +24,27 @@ export class LoginComponent implements OnDestroy{
     password: new FormControl("", Validators.required)
   });
 
-  constructor(private authService: AuthService, private router: Router) {
-  }
+  constructor(private router: Router, private notification: NotificationComponent, private authService: AuthService) { }
 
   ngOnDestroy() {
     this.loginSubscription?.unsubscribe();
   }
 
   onSubmit() {
-    console.log(this.loginForm.value)
-    if (this.loginForm.status === "VALID") {
+    console.log(this.loginForm)
+    if (this.loginForm.valid) {
       const user: UserToLogin = {
         email: this.loginForm.value.email!,
         password: this.loginForm.value.password!,
-      }
+      };
 
-      this.loginSubscription = this.authService.login(user).subscribe({next: data => {
-        this.router.navigateByUrl("/main");
-      }, error: err => {
-          console.log(err);
-      }});
+      this.loginSubscription = this.authService.login(user).subscribe({
+        next: data => {
+          this.router.navigateByUrl("/main");
+        }, error: err => {
+          this.notification.showHttpAlert(err);
+        }
+      });
     }
   }
 }

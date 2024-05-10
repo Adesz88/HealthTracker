@@ -40,6 +40,7 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 app.use("/users", require("./routes/users")(passport));
+app.use("/measurements", require("./routes/measurements")());
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);

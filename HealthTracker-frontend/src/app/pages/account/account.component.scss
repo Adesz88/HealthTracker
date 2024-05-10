@@ -1,0 +1,19 @@
+.card-span {
+  height: 100%;
+  width: 350px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+mat-card-content {
+  display: flex;
+  flex-direction: column;
+}
+
+mat-card-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
