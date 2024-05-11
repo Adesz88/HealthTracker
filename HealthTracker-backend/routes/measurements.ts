@@ -36,25 +36,56 @@ module.exports = function () {
   });
 
   router.get("/tracked", isAuthenticated, isDoctor, (req: Request, res: Response) => {
-    const userQuery = User.find({ doctorId: req.user });
-    userQuery.then(users => {
-      const measurementQuery = Measurement.find( {user: users} ).populate("type user");
-      measurementQuery.then(measurement => {
-        return res.status(200).send(measurement);
+    if (req.query.date) {
+      const start = new Date(req.query.date.toString());
+      start.setHours(0, 0, 0, 0);
+      const end = new Date(req.query.date.toString());
+      end.setHours(23, 59, 59, 999);
+
+      const userQuery = User.find({ doctorId: req.user });
+      userQuery.then(users => {
+        const measurementQuery = Measurement.find({ user: users, date: { $gte: start, $lte:end } })
+          .sort({ date: -1 })
+          .populate("type user");
+        measurementQuery.then(measurement => {
+          return res.status(200).send(measurement);
+        }).catch(error => {
+          return res.status(404).send("Cannot find measurements");
+        });
       }).catch(error => {
-        return res.status(404).send("Cannot find measurements");
+        return res.status(404).send("Cannot users");
       });
-    }).catch(error => {
-      return res.status(404).send("Cannot users");
-    });
+    } else {
+      return res.status(400).send("Invalid date format");
+    }
   });
 
   router.get("/", isAuthenticated, (req: Request, res: Response) => {
-    const query = Measurement.find({ user: req.user }).populate("type");
-    query.then(measurement => {
-      return res.status(200).send(measurement);
+    if (req.query.date) {
+      const start = new Date(req.query.date.toString());
+      start.setHours(0, 0, 0, 0);
+      const end = new Date(req.query.date.toString());
+      end.setHours(23, 59, 59, 999);
+
+      const query = Measurement.find({ user: req.user, date: { $gte: start, $lte:end } })
+        .sort({ date: -1 })
+        .populate("type");
+      query.then(measurement => {
+        return res.status(200).send(measurement);
+      }).catch(error => {
+        return res.status(500).send();
+      });
+    } else {
+      return res.status(400).send("Invalid date format");
+    }
+  });
+
+  router.delete("/:id", isAuthenticated, (req: Request, res: Response) => {
+    const query = Measurement.findOneAndDelete({ user: req.user, _id: req.params.id });
+    query.then(_ => {
+      return res.status(202).send();
     }).catch(error => {
-      return res.status(404).send("Cannot find measurements");
+      return res.status(500).send();
     });
   });
 

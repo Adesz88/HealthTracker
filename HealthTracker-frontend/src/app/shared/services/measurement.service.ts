@@ -15,11 +15,21 @@ export class MeasurementService {
     return this.http.get(`${BASEURL}/measurements/types`);
   }
 
-  getUserMeasurements(): Observable<any> {
-  return this.http.get(`${BASEURL}/measurements/`);
+  getUserMeasurements(date: Date): Observable<any> {
+    const dateString = date.toLocaleDateString("en-CA");
+    return this.http.get(`${BASEURL}/measurements/?date=${dateString}`);
+  }
+
+  getMeasurements(date: Date): Observable<any> {
+    const dateString = date.toLocaleDateString("en-CA");
+    return this.http.get(`${BASEURL}/measurements/tracked/?date=${dateString}`);
   }
 
   addMeasurement(measurement: NewMeasurement): Observable<any> {
     return this.http.post(`${BASEURL}/measurements/new`, measurement);
+  }
+
+  deleteUserMeasurement(id: string): Observable<any> {
+    return this.http.delete(`${BASEURL}/measurements/${id}`);
   }
 }

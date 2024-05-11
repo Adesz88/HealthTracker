@@ -55,9 +55,7 @@ export class MeasurementModalComponent implements OnInit, OnDestroy{
     public dialogRef: MatDialogRef<MeasurementModalComponent>,
     private notification: NotificationComponent,
     private measurementService: MeasurementService
-  ) {
-
-  }
+  ) { }
 
   ngOnInit() {
     this.typesSubscription = this.measurementService.getTypes().subscribe({
@@ -100,6 +98,7 @@ export class MeasurementModalComponent implements OnInit, OnDestroy{
       this.addMeasurementSubscription = this.measurementService.addMeasurement(measurement).subscribe({
         next: data => {
           this.notification.showNotification("Measurement added successfully");
+          this.dialogRef.close(true);
         }, error: err => {
           this.notification.showHttpAlert(err);
         }
