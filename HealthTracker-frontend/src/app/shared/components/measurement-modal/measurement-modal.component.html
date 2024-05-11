@@ -1,0 +1,28 @@
+<h2 mat-dialog-title>New measurement</h2>
+<form [formGroup]="measurementForm" (ngSubmit)="onSave()">
+  <mat-dialog-content>
+    <mat-form-field>
+      <mat-label>Measurement type</mat-label>
+      <mat-select formControlName="type" (selectionChange)="onSelect($event)">
+        <mat-option *ngFor="let type of types" [value]="type">{{type.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <span formArrayName="values">
+      <mat-form-field *ngFor="let value of selectedType?.values; index as i">
+      <mat-label>{{value}}</mat-label>
+      <input matInput [formControlName]="i">
+    </mat-form-field>
+    </span>
+
+    <mat-form-field *ngIf="selectedType">
+      <mat-label>Comment</mat-label>
+      <textarea matInput></textarea>
+    </mat-form-field>
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button mat-button type="submit">Save</button>
+  </mat-dialog-actions>
+</form>
