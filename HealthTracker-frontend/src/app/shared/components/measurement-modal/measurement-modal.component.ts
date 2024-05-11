@@ -16,7 +16,7 @@ import { MatOption, MatSelect, MatSelectChange } from "@angular/material/select"
 import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { CommonModule } from "@angular/common";
 import { MatInput } from "@angular/material/input";
-import { Measurement } from "../../models/measurement";
+import { NewMeasurement } from "../../models/measurement";
 
 @Component({
   selector: 'app-measurement-modal',
@@ -72,6 +72,7 @@ export class MeasurementModalComponent implements OnInit, OnDestroy{
 
   ngOnDestroy() {
     this.typesSubscription?.unsubscribe();
+    this.addMeasurementSubscription?.unsubscribe();
   }
 
   initializeValuesForm(numberOfValues: number) {
@@ -89,7 +90,7 @@ export class MeasurementModalComponent implements OnInit, OnDestroy{
 
   onSave() {
     if (this.measurementForm.valid) {
-      const measurement: Measurement = {
+      const measurement: NewMeasurement = {
         type: this.measurementForm.value.type?._id!,
         date: new Date(),
         values: this.measurementForm.value.values!,

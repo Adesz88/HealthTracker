@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { BASEURL } from "../constants";
-import { Measurement } from "../models/measurement";
+import { NewMeasurement } from "../models/measurement";
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +15,11 @@ export class MeasurementService {
     return this.http.get(`${BASEURL}/measurements/types`);
   }
 
-  addMeasurement(measurement: Measurement): Observable<any> {
+  getUserMeasurements(): Observable<any> {
+  return this.http.get(`${BASEURL}/measurements/`);
+  }
+
+  addMeasurement(measurement: NewMeasurement): Observable<any> {
     return this.http.post(`${BASEURL}/measurements/new`, measurement);
   }
 }
