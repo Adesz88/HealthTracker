@@ -3,8 +3,8 @@
   justify-content: space-between;
 }
 
-mat-card {
-  margin: 15px 1% 15px 1%;
+#search-field {
+  width: 300px;
 }
 
 .card-content {
@@ -34,4 +34,13 @@ mat-card {
 
 .second-column {
   width: 200px;
+}
+
+form {
+  display: flex;
+  gap: 20px
+}
+
+mat-card {
+  margin: 15px 1% 15px 1%;
 }

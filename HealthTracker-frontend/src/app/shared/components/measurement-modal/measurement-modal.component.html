@@ -8,8 +8,8 @@
       </mat-select>
     </mat-form-field>
 
-    <span formArrayName="values">
-      <mat-form-field *ngFor="let value of selectedType?.values; index as i">
+    <span formArrayName="values" id="values">
+      <mat-form-field *ngFor="let value of selectedType?.values; index as i" style="width: 100%">
       <mat-label>{{value}}</mat-label>
       <input matInput [formControlName]="i">
     </mat-form-field>

@@ -1,15 +1,23 @@
 .card-span {
   height: 100%;
-  width: 350px;
+  width: 600px;
   margin: auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
-mat-card-content {
+.column {
+  width: 300px;
   display: flex;
   flex-direction: column;
+}
+
+mat-card-content {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  gap: 20px;
 }
 
 mat-card-actions {

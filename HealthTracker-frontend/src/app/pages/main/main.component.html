@@ -11,12 +11,12 @@
         <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
-    </form>
 
-    <mat-form-field id="search-field">
-      <mat-label>Search</mat-label>
-      <input matInput [formControl]="search">
-    </mat-form-field>
+      <mat-form-field id="search-field" *ngIf="user?.role === ROLES.DOCTOR">
+        <mat-label>Search</mat-label>
+        <input matInput [formControl]="search">
+      </mat-form-field>
+    </form>
 
     <button mat-fab extended color="primary" (click)="onNew()" *ngIf="user?.role === ROLES.USER">
       <mat-icon>add</mat-icon>
@@ -44,7 +44,7 @@
 </ng-container>
 
 <ng-container *ngIf="user?.role === ROLES.DOCTOR">
-  <mat-card *ngFor="let measurement of measurements">
+  <mat-card *ngFor="let measurement of filteredMeasurements">
     <mat-card-header>
       <mat-card-title>
         {{measurement.user.firstName + " " + measurement.user.lastName

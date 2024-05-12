@@ -6,55 +6,53 @@
 
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
       <mat-card-content>
-        <mat-form-field>
-          <mat-label>First name</mat-label>
-          <input matInput type="text" formControlName="firstName">
-          <!--<mat-error>{{emptyError}}</mat-error>-->
-        </mat-form-field>
+        <span class="column">
+          <mat-form-field>
+            <mat-label>First name</mat-label>
+            <input matInput type="text" formControlName="firstName">
+          </mat-form-field>
 
-        <mat-form-field>
-          <mat-label>Last name</mat-label>
-          <input matInput type="text" formControlName="lastName">
-          <!--<mat-error>{{emptyError}}</mat-error>-->
-        </mat-form-field>
+          <mat-form-field>
+            <mat-label>Last name</mat-label>
+            <input matInput type="text" formControlName="lastName">
+          </mat-form-field>
 
-        <mat-form-field>
-          <mat-label>Email</mat-label>
-          <input matInput type="email" formControlName="email">
-          <!--<mat-error>{{formatError}}</mat-error>-->
-        </mat-form-field>
+          <mat-form-field>
+            <mat-label>Birth place</mat-label>
+            <input matInput type="text" formControlName="birthPlace">
+          </mat-form-field>
 
-        <mat-form-field>
-          <mat-label>Birth place</mat-label>
-          <input matInput type="text" formControlName="birthPlace">
-          <!--<mat-error>{{emptyError}}</mat-error>-->
-        </mat-form-field>
+           <mat-form-field>
+            <mat-label>Birth date</mat-label>
+            <input matInput formControlName="birthDate" [matDatepicker]="picker">
+            <mat-hint>MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </span>
 
-        <mat-form-field>
-          <mat-label>Birth date</mat-label>
-          <input matInput formControlName="birthDate" [matDatepicker]="picker">
-          <mat-hint>MM/DD/YYYY</mat-hint>
-          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
-        </mat-form-field>
+        <span class="column">
+         <mat-form-field>
+            <mat-label>Email</mat-label>
+            <input matInput type="email" formControlName="email">
+          </mat-form-field>
 
-        <mat-form-field>
-          <mat-label>Phone</mat-label>
-          <input matInput type="phone" formControlName="phone">
-          <!--<mat-error>{{emptyError}}</mat-error>-->
-        </mat-form-field>
+          <mat-form-field>
+            <mat-label>Phone</mat-label>
+            <input matInput type="phone" formControlName="phone">
+            <!--<mat-error>{{emptyError}}</mat-error>-->
+          </mat-form-field>
 
-        <mat-form-field>
-          <mat-label>Password</mat-label>
-          <input matInput type="password" formControlName="password">
-          <!--<mat-error>{{emptyError}}</mat-error>-->
-        </mat-form-field>
+          <mat-form-field>
+            <mat-label>Password</mat-label>
+            <input matInput type="password" formControlName="password">
+          </mat-form-field>
 
-        <mat-form-field>
-          <mat-label>Password again</mat-label>
-          <input matInput type="password" formControlName="rePassword">
-          <!--<mat-error>{{emptyError}}</mat-error>-->
-        </mat-form-field>
+          <mat-form-field>
+            <mat-label>Password again</mat-label>
+            <input matInput type="password" formControlName="rePassword">
+          </mat-form-field>
+        </span>
       </mat-card-content>
 
       <mat-card-actions>

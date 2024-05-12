@@ -45,11 +45,13 @@ export class MainComponent implements OnInit, OnDestroy{
   getCurrentUserSubscription?: Subscription;
   userMeasurementsSubscription?: Subscription;
   measurementsSubscription?: Subscription;
+  searchFieldSubscription?: Subscription;
   modalCloseSubscription?: Subscription;
 
   user?: User
   userMeasurements?: UserMeasurement[];
   measurements?: Measurement[];
+  filteredMeasurements?: Measurement[];
 
   filterForm = new FormGroup({
     date: new FormControl<Date>(new Date(), Validators.required),
@@ -69,6 +71,7 @@ export class MainComponent implements OnInit, OnDestroy{
       next: data => {
         this.user = data;
         this.getMeasurements(new Date());
+        this.initializeSearchField();
       }, error: err => {
         this.notification.showHttpAlert(err);
       }
@@ -79,7 +82,24 @@ export class MainComponent implements OnInit, OnDestroy{
     this.getCurrentUserSubscription?.unsubscribe();
     this.userMeasurementsSubscription?.unsubscribe();
     this.measurementsSubscription?.unsubscribe();
+    this.searchFieldSubscription?.unsubscribe();
     this.modalCloseSubscription?.unsubscribe();
+  }
+
+  initializeSearchField() {
+    if (this.user?.role === ROLES.DOCTOR) {
+      this.searchFieldSubscription = this.search.statusChanges.subscribe(res => {
+        const searchTerm = this.search.value?.toLowerCase();
+
+        if (this.measurements) {
+          this.filteredMeasurements = this.measurements.filter(x => {
+            const name = `${x.user.lastName} ${x.user.firstName}`.toLowerCase();
+
+            return name.includes(searchTerm!);
+          });
+        }
+      });
+    }
   }
 
   getMeasurements(date: Date) {
@@ -87,6 +107,7 @@ export class MainComponent implements OnInit, OnDestroy{
       this.measurementsSubscription = this.measurementService.getMeasurements(date).subscribe({
         next: data => {
           this.measurements = data;
+          this.filteredMeasurements = this.measurements;
           console.log(this.measurements);
         }, error: err => {
           this.notification.showHttpAlert(err);
@@ -113,7 +134,7 @@ export class MainComponent implements OnInit, OnDestroy{
   }
 
   onNew() {
-    const modalRef = this.modal.open(MeasurementModalComponent, { width: "800px" });
+    const modalRef = this.modal.open(MeasurementModalComponent, { width: "600px" });
     this.modalCloseSubscription = modalRef.afterClosed().subscribe(res => {
       if (res) {
         this.refreshMeasurements();
