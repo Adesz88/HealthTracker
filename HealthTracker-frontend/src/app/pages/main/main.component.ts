@@ -17,7 +17,8 @@ import {
 } from "@angular/material/datepicker";
 import { User } from "../../shared/models/user";
 import { UserService } from "../../shared/services/user.service";
-import { ROLES } from "../../shared/constants";
+import { ROLE_NAMES, ROLES } from "../../shared/constants";
+import { MatIcon } from "@angular/material/icon";
 
 @Component({
   selector: 'app-main',
@@ -34,7 +35,8 @@ import { ROLES } from "../../shared/constants";
     MatCardContent,
     MatDatepickerInput,
     MatDatepickerToggle,
-    MatDatepicker
+    MatDatepicker,
+    MatIcon
   ],
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss'
@@ -52,6 +54,8 @@ export class MainComponent implements OnInit, OnDestroy{
   filterForm = new FormGroup({
     date: new FormControl<Date>(new Date(), Validators.required),
   });
+
+  search = new FormControl<string>("");
 
   constructor(
     public modal: MatDialog,
@@ -144,4 +148,5 @@ export class MainComponent implements OnInit, OnDestroy{
   }
 
   protected readonly ROLES = ROLES;
+  protected readonly ROLE_NAMES = ROLE_NAMES;
 }

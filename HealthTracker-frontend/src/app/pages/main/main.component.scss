@@ -1,3 +1,37 @@
+#action-bar {
+  display: flex;
+  justify-content: space-between;
+}
+
 mat-card {
   margin: 15px 1% 15px 1%;
+}
+
+.card-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+}
+
+.measurement-card-content {
+  display: flex;
+  justify-content: space-between;
+}
+
+.values {
+  display: flex;
+  gap: 15px;
+}
+
+.user-details {
+  display: flex;
+  gap: 15px;
+}
+
+.first-column {
+  width: 250px;
+}
+
+.second-column {
+  width: 200px;
 }
