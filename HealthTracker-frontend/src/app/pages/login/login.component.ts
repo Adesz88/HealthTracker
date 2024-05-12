@@ -47,4 +47,12 @@ export class LoginComponent implements OnDestroy{
       });
     }
   }
+
+  fillDoctor() {
+    this.loginForm.patchValue({ email: "jsmith@email.com", password: "testpw" });
+  }
+
+  fillUser() {
+    this.loginForm.patchValue({ email: "johnd@email.com", password: "testpw" });
+  }
 }

@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatButton } from "@angular/material/button";
 import { MatCard, MatCardActions, MatCardContent, MatCardHeader, MatCardTitle } from "@angular/material/card";
-import { MatFormField, MatLabel } from "@angular/material/form-field";
+import { MatFormField, MatHint, MatLabel, MatSuffix } from "@angular/material/form-field";
 import { MatInput } from "@angular/material/input";
 import { FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from "@angular/forms";
 import { Subscription } from "rxjs";
@@ -10,12 +10,15 @@ import { NotificationComponent } from "../../shared/components/notification/noti
 import { UpdatedUser, User } from "../../shared/models/user";
 import { UserService } from "../../shared/services/user.service";
 import { MatOption, MatSelect } from "@angular/material/select";
-import { NgForOf } from "@angular/common";
+import { CommonModule, NgForOf } from "@angular/common";
+import { ROLES } from "../../shared/constants";
+import { MatDatepicker, MatDatepickerInput, MatDatepickerToggle } from "@angular/material/datepicker";
 
 @Component({
   selector: 'app-account',
   standalone: true,
   imports: [
+    CommonModule,
     MatButton,
     MatCard,
     MatCardActions,
@@ -29,7 +32,12 @@ import { NgForOf } from "@angular/common";
     RouterLink,
     MatSelect,
     MatOption,
-    NgForOf
+    NgForOf,
+    MatDatepickerToggle,
+    MatDatepicker,
+    MatDatepickerInput,
+    MatHint,
+    MatSuffix
   ],
   templateUrl: './account.component.html',
   styleUrl: './account.component.scss'
@@ -39,17 +47,18 @@ export class AccountComponent implements OnInit, OnDestroy{
   getCurrentUserSubscription?: Subscription;
   updateUserSubscription?: Subscription;
 
+  role?: number;
   doctors?: User[];
 
   accountForm = new FormGroup({
     lastName: new FormControl<string>("", Validators.required),
     firstName: new FormControl<string>("", Validators.required),
-    email: new FormControl("", [Validators.required, Validators.email]),
-    birthPlace: new FormControl("", Validators.required),
+    email: new FormControl<string>("", [Validators.required, Validators.email]),
+    birthPlace: new FormControl<string>("", Validators.required),
     birthDate: new FormControl<string>("", Validators.required),
     phone: new FormControl<string>("", [Validators.required,
       Validators.pattern("^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$")]),
-    doctor: new FormControl<string>("", Validators.required)
+    doctor: new FormControl<string | null>("")
     //password: new FormControl(""),
     //rePassword: new FormControl("")
   });
@@ -70,9 +79,9 @@ export class AccountComponent implements OnInit, OnDestroy{
       next: data => {
         this.accountForm.patchValue({
           ...data,
-          birthDate: new Date(data.birthDate).toLocaleDateString("en-CA"),
           doctor: data.doctorId
         });
+        this.role = data.role;
       }, error: err => {
         this.notification.showHttpAlert(err);
       }
@@ -121,4 +130,6 @@ export class AccountComponent implements OnInit, OnDestroy{
       }});
     }
   }
+
+  protected readonly ROLES = ROLES;
 }

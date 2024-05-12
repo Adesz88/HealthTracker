@@ -6,7 +6,7 @@ export interface User {
   lastName: string,
   phone: string,
   birthPlace: string,
-  birthDate: Date,
+  birthDate: string,
 }
 
 export interface UserToLogin {

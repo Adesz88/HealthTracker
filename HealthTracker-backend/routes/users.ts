@@ -3,6 +3,7 @@ import {PassportStatic} from "passport";
 
 import { User } from "../shared/model/user";
 import { ROLES } from "../constants";
+import { Notification } from "../shared/model/notification";
 
 const isAuthenticated = require("../shared/middlewares/is-authenticated.ts")
 
@@ -63,7 +64,10 @@ module.exports = function (passport: PassportStatic) {
     }
   });
 
-  router.get("/current", isAuthenticated, (req: Request, res: Response) => {
+  router.get("/current", (req: Request, res: Response) => {
+    if (!req.isAuthenticated()) {
+      return res.status(200).send(null);
+    }
     const query = User.findById(req.user).select({ password: false,  __v: false});
     query.then(user => {
       return res.status(200).send(user);
@@ -82,9 +86,17 @@ module.exports = function (passport: PassportStatic) {
         birthDate: req.body.birthDate,
         phone: req.body.phone,
         doctorId: req.body.doctorId
-      }, {returnDocument: "after"});
+      }, {returnDocument: "before"});
       query.then(user => {
-        return res.status(200).send(user);
+        if (user?.doctorId !== req.body.doctorId) {
+          const notification = new Notification({
+            message: `${req.body.firstName} ${req.body.lastName} chose you as her/his doctor.`,
+            date: new Date(),
+            user: req.body.doctorId
+          });
+          notification.save().then();
+        }
+        return res.status(200).send();
       }).catch(error => {
         return res.status(400).send("Error during update");
       });

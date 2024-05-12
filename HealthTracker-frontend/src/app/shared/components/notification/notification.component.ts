@@ -12,6 +12,7 @@ export class NotificationComponent {
   constructor(private snackBar: MatSnackBar) { }
 
   showHttpAlert(err: any) {
+    console.log(err.error);
     if (err.error) {
       this.snackBar.open(`Error: ${err.error}`, "OK", {duration: 3000});
     } else {

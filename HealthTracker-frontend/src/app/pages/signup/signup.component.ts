@@ -8,11 +8,12 @@ import { Subscription } from "rxjs";
 import { AuthService } from "../../shared/services/auth.service";
 import { Router, RouterLink } from "@angular/router";
 import { NotificationComponent } from "../../shared/components/notification/notification.component";
+import { MatDatepicker, MatDatepickerInput, MatDatepickerToggle } from "@angular/material/datepicker";
 
 @Component({
   selector: 'app-signup',
   standalone: true,
-  imports: [MatButtonModule, MatCardModule, MatInputModule, ReactiveFormsModule, RouterLink],
+  imports: [MatButtonModule, MatCardModule, MatInputModule, ReactiveFormsModule, RouterLink, MatDatepicker, MatDatepickerInput, MatDatepickerToggle],
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.scss'
 })
@@ -22,13 +23,13 @@ export class SignupComponent implements OnInit, OnDestroy{
   registerForm = new FormGroup({
     lastName: new FormControl<string>("", Validators.required),
     firstName: new FormControl<string>("", Validators.required),
-    email: new FormControl("", [Validators.required, Validators.email]),
-    birthPlace: new FormControl("", Validators.required),
-    birthDate: new FormControl("", Validators.required),
+    email: new FormControl<string>("", [Validators.required, Validators.email]),
+    birthPlace: new FormControl<string>("", Validators.required),
+    birthDate: new FormControl<Date>(new Date(), Validators.required),
     phone: new FormControl<string>("", [Validators.required,
       Validators.pattern("^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$")]),
-    password: new FormControl("", Validators.required),
-    rePassword: new FormControl("", Validators.required)
+    password: new FormControl<string>("", Validators.required),
+    rePassword: new FormControl<string>("", Validators.required)
   });
 
   constructor(private router: Router, private notification: NotificationComponent,private authService: AuthService) { }
@@ -65,8 +66,8 @@ export class SignupComponent implements OnInit, OnDestroy{
         firstName: this.registerForm.value.firstName!,
         lastName: this.registerForm.value.lastName!,
         phone: this.registerForm.value.phone!,
-        birthPlace: this.registerForm.value.birthDate!,
-        birthDate: new Date(this.registerForm.value.birthDate!),
+        birthPlace: this.registerForm.value.birthPlace!,
+        birthDate: this.registerForm.value.birthDate!,
       };
 
       this.registerSubscription = this.authService.register(user).subscribe({

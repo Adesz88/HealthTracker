@@ -11,7 +11,7 @@ export interface NewMeasurement {
 export interface UserMeasurement {
   _id: string,
   type: MeasurementType,
-  date: Date,
+  date: string,
   values: number[],
   comment: string,
   user: string
@@ -19,7 +19,7 @@ export interface UserMeasurement {
 
 export interface Measurement {
   type: MeasurementType,
-  date: Date,
+  date: string,
   values: number[],
   comment: string,
   user: User

@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { Measurement } from "../shared/model/measurement";
 import { MeasurementType } from "../shared/model/measurement-type";
 import { User } from "../shared/model/user";
+import { Notification } from "../shared/model/notification";
 
 const isAuthenticated = require("../shared/middlewares/is-authenticated.ts");
 const isDoctor = require("../shared/middlewares/is-doctor.ts");
@@ -19,8 +20,17 @@ module.exports = function () {
       user: req.user
     });
 
-    measurement.save().then(data => {
-      res.status(200).send(data);
+    measurement.save().then(data => data.populate("user type")).then(measurement => {
+      const user = measurement.user as any;
+      const type = measurement.type as any;
+      const notification = new Notification({
+        message: `${user.firstName} ${user.lastName} uploaded a new ${type.name.toLowerCase()} measurement.`,
+        date: req.body.date,
+        user: user.doctorId
+      });
+      notification.save().then();
+
+      return res.status(200).send();
     }).catch(error => {
       res.status(500).send(error);
     });

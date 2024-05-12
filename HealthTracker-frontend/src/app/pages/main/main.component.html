@@ -1,46 +1,51 @@
-<button mat-raised-button color="primary" (click)="onNew()">New measurement</button>
+<button mat-raised-button color="primary" (click)="onNew()" *ngIf="user?.role === ROLES.USER">
+  New measurement
+</button>
+
 <form [formGroup]="filterForm">
   <mat-form-field>
     <mat-label>Date</mat-label>
     <input matInput formControlName="date" [matDatepicker]="picker" (dateChange)="onDateChange($event)">
+    <mat-hint>MM/DD/YYYY</mat-hint>
     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
   </mat-form-field>
 </form>
 
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>My measurements</mat-card-title>
-  </mat-card-header>
+<div>
+  <p>{{user?.firstName + " " + user?.lastName}}</p>
+  <p>{{"role: " + user?.role}}</p>
+</div>
 
-  <mat-card-content>
-    <mat-card *ngFor="let userMeasurement of userMeasurements">
-      <mat-card-header>
-        <mat-card-title>{{userMeasurement.type.name + " - " + userMeasurement.date}}</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <p *ngFor="let value of userMeasurement.type.values; index as i">{{value + ": " + userMeasurement.values[i]}}</p>
-        <p *ngIf="userMeasurement.comment">Comment: {{userMeasurement.comment}}</p>
-
-        <button mat-raised-button color="warn" (click)="onDelete(userMeasurement._id)">Delete</button>
-      </mat-card-content>
-    </mat-card>
-  </mat-card-content>
-</mat-card>
-
-<mat-card *ngFor="let measurement of measurements">
-  <mat-card-header>
-    <mat-card-title>{{measurement.type.name + " - " + measurement.date}}</mat-card-title>
-  </mat-card-header>
-
-  <mat-card-content>
+<ng-container *ngIf="user?.role === ROLES.USER">
+  <mat-card *ngFor="let userMeasurement of userMeasurements">
+    <mat-card-header>
+      <mat-card-title>{{userMeasurement.type.name + " - " + userMeasurement.date}}</mat-card-title>
+    </mat-card-header>
     <mat-card-content>
-      <p *ngFor="let value of measurement.type.values; index as i">{{value + ": " + measurement.values[i]}}</p>
-      <p *ngIf="measurement.comment">Comment: {{measurement.comment}}</p>
-      <p>Name: {{measurement.user.firstName + " " + measurement.user.lastName}}</p>
-      <p>Email: {{measurement.user.email}}</p>
-      <p>Phone: {{measurement.user.phone}}</p>
-      <p>Birth place, date: {{measurement.user.birthPlace + ", " + measurement.user.birthDate}}</p>
+      <p *ngFor="let value of userMeasurement.type.values; index as i">{{value + ": " + userMeasurement.values[i]}}</p>
+      <p *ngIf="userMeasurement.comment">Comment: {{userMeasurement.comment}}</p>
+
+      <button mat-raised-button color="warn" (click)="onDelete(userMeasurement._id)">Delete</button>
     </mat-card-content>
-  </mat-card-content>
-</mat-card>
+  </mat-card>
+</ng-container>
+
+<ng-container *ngIf="user?.role === ROLES.DOCTOR">
+  <mat-card *ngFor="let measurement of measurements">
+    <mat-card-header>
+      <mat-card-title>{{measurement.type.name + " - " + formatTime(measurement.date)}}</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <mat-card-content>
+        <p *ngFor="let value of measurement.type.values; index as i">{{value + ": " + measurement.values[i]}}</p>
+        <p *ngIf="measurement.comment">Comment: {{measurement.comment}}</p>
+        <p>Name: {{measurement.user.firstName + " " + measurement.user.lastName}}</p>
+        <p>Email: {{measurement.user.email}}</p>
+        <p>Phone: {{measurement.user.phone}}</p>
+        <p>Birth place, date: {{measurement.user.birthPlace + ", " + formatDate(measurement.user.birthDate)}}</p>
+      </mat-card-content>
+    </mat-card-content>
+  </mat-card>
+</ng-container>

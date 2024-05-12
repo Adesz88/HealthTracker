@@ -13,9 +13,11 @@ import { CommonModule } from "@angular/common";
 import {
   MatDatepicker,
   MatDatepickerInput,
-  MatDatepickerInputEvent,
   MatDatepickerToggle
 } from "@angular/material/datepicker";
+import { User } from "../../shared/models/user";
+import { UserService } from "../../shared/services/user.service";
+import { ROLES } from "../../shared/constants";
 
 @Component({
   selector: 'app-main',
@@ -38,10 +40,12 @@ import {
   styleUrl: './main.component.scss'
 })
 export class MainComponent implements OnInit, OnDestroy{
+  getCurrentUserSubscription?: Subscription;
   userMeasurementsSubscription?: Subscription;
   measurementsSubscription?: Subscription;
   modalCloseSubscription?: Subscription;
 
+  user?: User
   userMeasurements?: UserMeasurement[];
   measurements?: Measurement[];
 
@@ -52,37 +56,48 @@ export class MainComponent implements OnInit, OnDestroy{
   constructor(
     public modal: MatDialog,
     private notification: NotificationComponent,
-    private measurementService: MeasurementService
+    private userService: UserService,
+    private measurementService: MeasurementService,
   ) { }
 
   ngOnInit() {
-    this.getMeasurements(new Date());
+    this.getCurrentUserSubscription = this.userService.getCurrentUser().subscribe({
+      next: data => {
+        this.user = data;
+        this.getMeasurements(new Date());
+      }, error: err => {
+        this.notification.showHttpAlert(err);
+      }
+    });
   }
 
   ngOnDestroy() {
+    this.getCurrentUserSubscription?.unsubscribe();
     this.userMeasurementsSubscription?.unsubscribe();
     this.measurementsSubscription?.unsubscribe();
     this.modalCloseSubscription?.unsubscribe();
   }
 
   getMeasurements(date: Date) {
-    this.userMeasurementsSubscription = this.measurementService.getUserMeasurements(date).subscribe({
-      next: data => {
-        this.userMeasurements = data;
-        console.log(this.userMeasurements);
-      }, error: err => {
-        this.notification.showHttpAlert(err);
-      }
-    });
-
-    this.measurementsSubscription = this.measurementService.getMeasurements(date).subscribe({
-      next: data => {
-        this.measurements = data;
-        console.log(this.measurements);
-      }, error: err => {
-        this.notification.showHttpAlert(err);
-      }
-    });
+    if (this.user?.role === ROLES.DOCTOR) {
+      this.measurementsSubscription = this.measurementService.getMeasurements(date).subscribe({
+        next: data => {
+          this.measurements = data;
+          console.log(this.measurements);
+        }, error: err => {
+          this.notification.showHttpAlert(err);
+        }
+      });
+    } else{
+      this.userMeasurementsSubscription = this.measurementService.getUserMeasurements(date).subscribe({
+        next: data => {
+          this.userMeasurements = data;
+          console.log(this.userMeasurements);
+        }, error: err => {
+          this.notification.showHttpAlert(err);
+        }
+      });
+    }
   }
 
   refreshMeasurements() {
@@ -119,4 +134,14 @@ export class MainComponent implements OnInit, OnDestroy{
       }
     });
   }
+
+  formatDate(date: string) {
+    return new Date(date).toLocaleDateString("en-US");
+  }
+
+  formatTime(date: string) {
+    return new Date(date).toLocaleTimeString("en-US", {hour: '2-digit', minute:'2-digit'});
+  }
+
+  protected readonly ROLES = ROLES;
 }
