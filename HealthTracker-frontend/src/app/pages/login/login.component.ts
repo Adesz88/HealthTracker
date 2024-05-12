@@ -31,7 +31,6 @@ export class LoginComponent implements OnDestroy{
   }
 
   onSubmit() {
-    console.log(this.loginForm)
     if (this.loginForm.valid) {
       const user: UserToLogin = {
         email: this.loginForm.value.email!,

@@ -5,7 +5,7 @@ import { User } from "../shared/model/user";
 import { ROLES } from "../constants";
 import { Notification } from "../shared/model/notification";
 
-const isAuthenticated = require("../shared/middlewares/is-authenticated.ts")
+const isAuthenticated = require("../shared/middlewares/is-authenticated")
 
 module.exports = function (passport: PassportStatic) {
   const express = require("express");
@@ -14,15 +14,13 @@ module.exports = function (passport: PassportStatic) {
   router.post("/login", (req: Request, res: Response, next: NextFunction) => {
     passport.authenticate("local", (error: string | null, user: typeof User) => {
       if (error) {
-        console.log(error);
-        res.status(500).send(error);
+        res.status(500).send();
       } else {
         if (!user) {
           res.status(400).send("User not found.");
         } else {
           req.login(user, (err: string | null) => {
             if (err) {
-              console.log(err);
               res.status(500).send("Internal server error.");
             } else {
               res.status(200).send(user);
@@ -40,8 +38,6 @@ module.exports = function (passport: PassportStatic) {
   });
 
   router.post("/register", async (req: Request, res: Response) => {
-    console.log(req.body);
-
     if (!await User.findOne({ email: req.body.email })) {
       const user = new User({
         email: req.body.email,
@@ -72,7 +68,7 @@ module.exports = function (passport: PassportStatic) {
     query.then(user => {
       return res.status(200).send(user);
     }).catch(error => {
-      return res.status(404).send("Cannot find user");
+      return res.status(500).send();
     });
   });
 
@@ -87,6 +83,7 @@ module.exports = function (passport: PassportStatic) {
         phone: req.body.phone,
         doctorId: req.body.doctorId
       }, {returnDocument: "before"});
+
       query.then(user => {
         if (user?.doctorId !== req.body.doctorId) {
           const notification = new Notification({
@@ -98,7 +95,7 @@ module.exports = function (passport: PassportStatic) {
         }
         return res.status(200).send();
       }).catch(error => {
-        return res.status(400).send("Error during update");
+        return res.status(500).send();
       });
     }
   });
@@ -108,7 +105,7 @@ module.exports = function (passport: PassportStatic) {
     query.then(doctors => {
       return res.status(200).send(doctors);
     }).catch(error => {
-      return res.status(404).send("Cannot find doctors");
+      return res.status(500).send();
     });
   });
 
@@ -117,7 +114,7 @@ module.exports = function (passport: PassportStatic) {
     query.then(users => {
       return res.status(200).send(users);
     }).catch(error => {
-      return res.status(404).send("Cannot find users");
+      return res.status(500).send();
     });
   });
 

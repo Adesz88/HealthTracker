@@ -4,8 +4,8 @@ import { MeasurementType } from "../shared/model/measurement-type";
 import { User } from "../shared/model/user";
 import { Notification } from "../shared/model/notification";
 
-const isAuthenticated = require("../shared/middlewares/is-authenticated.ts");
-const isDoctor = require("../shared/middlewares/is-doctor.ts");
+const isAuthenticated = require("../shared/middlewares/is-authenticated");
+const isDoctor = require("../shared/middlewares/is-doctor");
 
 module.exports = function () {
   const express = require("express");
@@ -32,7 +32,7 @@ module.exports = function () {
 
       return res.status(200).send();
     }).catch(error => {
-      res.status(500).send(error);
+      res.status(500).send();
     });
   });
 
@@ -41,7 +41,7 @@ module.exports = function () {
     query.then(types => {
       return res.status(200).send(types);
     }).catch(error => {
-      return res.status(404).send("Cannot find measurement types");
+      return res.status(500).send();
     });
   });
 
@@ -60,10 +60,10 @@ module.exports = function () {
         measurementQuery.then(measurement => {
           return res.status(200).send(measurement);
         }).catch(error => {
-          return res.status(404).send("Cannot find measurements");
+          return res.status(500).send();
         });
       }).catch(error => {
-        return res.status(404).send("Cannot users");
+        return res.status(500).send();
       });
     } else {
       return res.status(400).send("Invalid date format");

@@ -58,7 +58,6 @@ export class SignupComponent implements OnInit, OnDestroy{
   }
 
   onSubmit() {
-    console.log(this.registerForm);
     if (this.registerForm.valid) {
       const user: NewUser = {
         email: this.registerForm.value.email!,

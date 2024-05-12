@@ -61,7 +61,6 @@ export class MeasurementModalComponent implements OnInit, OnDestroy{
     this.typesSubscription = this.measurementService.getTypes().subscribe({
       next: data => {
         this.types = data;
-        console.log(this.types);
       }, error: err => {
         this.notification.showHttpAlert(err);
       }
@@ -81,7 +80,6 @@ export class MeasurementModalComponent implements OnInit, OnDestroy{
   }
 
   onSelect(event: MatSelectChange) {
-    console.log(event);
     this.selectedType = event.value;
     this.initializeValuesForm(this.selectedType!.values.length);
   }

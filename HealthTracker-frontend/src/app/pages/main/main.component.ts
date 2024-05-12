@@ -108,7 +108,6 @@ export class MainComponent implements OnInit, OnDestroy{
         next: data => {
           this.measurements = data;
           this.filteredMeasurements = this.measurements;
-          console.log(this.measurements);
         }, error: err => {
           this.notification.showHttpAlert(err);
         }
@@ -117,7 +116,6 @@ export class MainComponent implements OnInit, OnDestroy{
       this.userMeasurementsSubscription = this.measurementService.getUserMeasurements(date).subscribe({
         next: data => {
           this.userMeasurements = data;
-          console.log(this.userMeasurements);
         }, error: err => {
           this.notification.showHttpAlert(err);
         }

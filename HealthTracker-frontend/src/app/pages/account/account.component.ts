@@ -59,14 +59,11 @@ export class AccountComponent implements OnInit, OnDestroy{
     phone: new FormControl<string>("", [Validators.required,
       Validators.pattern("^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$")]),
     doctor: new FormControl<string | null>("")
-    //password: new FormControl(""),
-    //rePassword: new FormControl("")
   });
 
   constructor(private router: Router, private notification: NotificationComponent, private userService: UserService) { }
 
   ngOnInit() {
-    //this.accountForm.setValidators(this.mustMatch("password", "rePassword"));
     this.getDoctorsSubscription = this.userService.getDoctors().subscribe({
       next: data => {
        this.doctors = data
@@ -94,27 +91,10 @@ export class AccountComponent implements OnInit, OnDestroy{
     this.updateUserSubscription?.unsubscribe();
   }
 
-  mustMatch(controlName: string, matchingControlName: string): any {
-    return (formGroup: FormGroup): ValidationErrors => {
-      const control = formGroup.controls[controlName];
-      const matchingControl = formGroup.controls[matchingControlName];
-
-      if (control.value !== matchingControl.value) {
-        matchingControl.setErrors({ mustMatch: true });
-        return { mustMatch: true };
-      } else {
-        matchingControl.setErrors(null);
-        return {};
-      }
-    }
-  }
-
   onSubmit() {
-    console.log(this.accountForm);
     if (this.accountForm.valid) {
       const user: UpdatedUser = {
         email: this.accountForm.value.email!,
-        //password: null,//this.accountForm.value.password!,
         firstName: this.accountForm.value.firstName!,
         lastName: this.accountForm.value.lastName!,
         phone: this.accountForm.value.phone!,
@@ -124,7 +104,7 @@ export class AccountComponent implements OnInit, OnDestroy{
       };
 
       this.updateUserSubscription = this.userService.updateCurrentUser(user).subscribe({next: data => {
-        this.notification.showNotification("Successfully updated");
+        this.notification.showNotification("Account updated successfully");
       }, error: err => {
         this.notification.showHttpAlert(err);
       }});

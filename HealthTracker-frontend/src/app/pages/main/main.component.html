@@ -28,7 +28,7 @@
 <ng-container *ngIf="user?.role === ROLES.USER">
   <mat-card *ngFor="let userMeasurement of userMeasurements">
     <mat-card-header>
-      <mat-card-title>{{userMeasurement.type.name + " - " + userMeasurement.date}}</mat-card-title>
+      <mat-card-title>{{userMeasurement.type.name + " - " + formatTime(userMeasurement.date)}}</mat-card-title>
     </mat-card-header>
     <mat-card-content class="card-content">
       <span>

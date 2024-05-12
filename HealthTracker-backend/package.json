@@ -4,9 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npx nodemon ./index.ts",
-    "init-database": "npx nodemon ./init-database.ts"
+    "build": "node_modules/typescript/bin/tsc",
+    "start": "node build/index.js",
+    "dev-start": "npx nodemon ./index.ts",
+    "init-database": "node build/init-database.js"
   },
   "keywords": [],
   "author": "",

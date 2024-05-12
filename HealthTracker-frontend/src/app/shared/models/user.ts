@@ -32,5 +32,4 @@ export interface UpdatedUser {
   birthPlace: string,
   birthDate: Date,
   doctorId: string | null,
-  //password: string | null
 }

@@ -7,6 +7,6 @@ module.exports = function (req: Request, res: Response, next: NextFunction) {
   query.then(user => {
     return next();
   }).catch(error => {
-    return res.status(403).send("Cannot get other users measurements");
+    return res.status(403).send("You don't have the right for this");
   });
 }

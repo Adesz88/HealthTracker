@@ -34,14 +34,10 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.get('/', (req: Request, res: Response) => {
-    res.send('Hello World!');
-});
-
 app.use("/users", require("./routes/users")(passport));
 app.use("/measurements", require("./routes/measurements")());
 app.use("/notifications", require("./routes/notifications")());
 
 app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`);
+    console.log(`Server listening on port ${port}`);
 });

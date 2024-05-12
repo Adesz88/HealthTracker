@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
 import { Notification } from "../shared/model/notification";
 
-const isAuthenticated = require("../shared/middlewares/is-authenticated.ts");
+const isAuthenticated = require("../shared/middlewares/is-authenticated");
 
 module.exports = function () {
   const express = require("express");

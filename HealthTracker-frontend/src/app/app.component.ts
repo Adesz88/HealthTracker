@@ -11,7 +11,7 @@ import { User } from "./shared/models/user";
 import { UserService } from "./shared/services/user.service";
 import { ROLES } from "./shared/constants";
 import { NotificationService } from "./shared/services/notification.service";
-import { Notification } from "./shared/models/Notification";
+import { Notification } from "./shared/models/notification";
 import { NotificationComponent } from "./shared/components/notification/notification.component";
 import { MatDivider } from "@angular/material/divider";
 

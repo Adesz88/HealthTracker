@@ -14,3 +14,4 @@ HealthTracker-frontend/node_modules
 !HealthTracker-frontend/.vscode/launch.json
 !HealthTracker-frontend/.vscode/extensions.json
 */.vscode
+/HealthTracker-backend/build
