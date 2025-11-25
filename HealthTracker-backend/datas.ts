@@ -173,7 +173,7 @@ export const measurements = [
     _id: "664087a4291f2c3587ffe6ca",
     type: "66408668efd4906637aa2a76",
     date: setTime(dates[2], 12, 30),
-    values: [110],
+    values: [6],
     comment: "Measured after a light meal.",
     user: "664087a4291f2c3587ffe6b3"
   },

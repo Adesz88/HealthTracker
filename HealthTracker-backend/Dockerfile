@@ -1,6 +1,8 @@
-FROM mongo
-
-EXPOSE 27017
-
-# BUILD: sudo docker build -t health_tracker_database .
-# RUN: sudo docker run -p 6000:27017 -it --name health_tracker_database -d health_tracker_database
+FROM node:22-alpine
+RUN npm install -g pm2
+WORKDIR /app
+COPY build ./
+COPY package*.json ./
+RUN npm ci --only=production && npm cache clean --force
+EXPOSE 3000
+CMD ["pm2-runtime", "start", "index.js"]

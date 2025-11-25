@@ -15,3 +15,4 @@ HealthTracker-frontend/node_modules
 !HealthTracker-frontend/.vscode/extensions.json
 */.vscode
 /HealthTracker-backend/build
+.DS_Store
