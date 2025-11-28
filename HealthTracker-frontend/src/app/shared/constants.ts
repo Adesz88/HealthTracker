@@ -1,4 +1,4 @@
-export const BASEURL: string = "http://localhost:3000";
+export const BASEURL: string = "/api";
 
 export const ROLES = {
   DOCTOR: 0,
