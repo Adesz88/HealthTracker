@@ -3,8 +3,6 @@
 HealthTracker-backend/.idea/
 HealthTracker-backend/node_modules
 *.bkp
-HealthTracker-backend/package-lock.json
-HealthTracker-backend/package-lock.json
 HealthTracker-backend/.env
 HealthTracker-frontend/.editorconfig
 HealthTracker-frontend/.vscode/*
