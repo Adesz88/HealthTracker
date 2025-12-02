@@ -12,9 +12,12 @@ COPY zabbix_agent2.conf /etc/zabbix/zabbix_agent2.conf
 WORKDIR /app
 COPY build ./
 COPY package*.json ./
+COPY start.sh ./
 
 RUN npm ci --only=production && npm cache clean --force
 
 EXPOSE 3000
 
-CMD ["pm2-runtime", "start", "index.js"]
+RUN chmod +x start.sh
+
+CMD ["./start.sh"]
