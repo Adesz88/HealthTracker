@@ -9,6 +9,15 @@ RUN apk add --no-cache \
 # Configure Zabbix Agent
 COPY zabbix_agent2.conf /etc/zabbix/zabbix_agent2.conf
 
+# Install rsyslog
+RUN apk add --no-cache rsyslog
+# Create rsyslog config
+COPY rsyslog.conf /etc/rsyslog.conf
+
+RUN mkdir -p /var/log/pm2
+# Configure PM2 to use syslog
+ENV PM2_SYSLOG=true
+
 WORKDIR /app
 COPY build ./
 COPY package*.json ./

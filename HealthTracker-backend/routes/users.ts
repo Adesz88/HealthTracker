@@ -61,6 +61,7 @@ module.exports = function (passport: PassportStatic) {
   });
 
   router.get("/current", (req: Request, res: Response) => {
+    console.log("/current endpoint called");
     if (!req.isAuthenticated()) {
       return res.status(200).send(null);
     }
