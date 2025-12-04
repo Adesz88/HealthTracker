@@ -10,8 +10,10 @@ module.exports = function () {
   router.get("/", isAuthenticated, (req: Request, res: Response) => {
     const query = Notification.find({ user: req.user }).sort({ date: -1 });
     query.then(notifications => {
+      console.log(`/notifications endpoint called by ${req.user}`);
       return res.status(200).send(notifications);
     }).catch(error => {
+      console.log(`/notifications endpoint called: error while getting notifications: ${error}`);
       return res.status(500).send();
     });
   });
@@ -19,8 +21,10 @@ module.exports = function () {
   router.delete("/", isAuthenticated, (req: Request, res: Response) => {
     const query = Notification.deleteMany({ user: req.user });
     query.then(notifications => {
+      console.log(`/notifications delete endpoint called by ${req.user}`);
       return res.status(204).send();
     }).catch(error => {
+      console.log(`/notifications delete endpoint called: error while clearing notifications: ${error}`);
       return res.status(500).send();
     });
   });

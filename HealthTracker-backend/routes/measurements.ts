@@ -30,8 +30,10 @@ module.exports = function () {
       });
       notification.save().then();
 
+      console.log(`/measurement/new endpoint called: ${req.user} uploaded a new ${type.name.toLowerCase()} measurement.`);
       return res.status(200).send();
     }).catch(error => {
+      console.log(`/measurement/new endpoint called: error while uploading a measurement: ${error}`);
       res.status(500).send();
     });
   });
@@ -39,8 +41,10 @@ module.exports = function () {
   router.get("/types", isAuthenticated, (req: Request, res: Response) => {
     const query = MeasurementType.find();
     query.then(types => {
+      console.log(`/measurement/types endpoint called`);
       return res.status(200).send(types);
     }).catch(error => {
+      console.log(`/measurement/types endpoint called: error while getting types: ${error}`);
       return res.status(500).send();
     });
   });
@@ -58,11 +62,14 @@ module.exports = function () {
           .sort({ date: -1 })
           .populate("type user");
         measurementQuery.then(measurement => {
+          console.log(`/measurement/tracked endpoint called: ${req.user} listed patient measurements.`);
           return res.status(200).send(measurement);
         }).catch(error => {
+          console.log(`/measurement/tracked endpoint called: error while listing patient measurements: ${error}`);
           return res.status(500).send();
         });
       }).catch(error => {
+        console.log(`/measurement/tracked endpoint called: error while listing patient measurements: ${error}`);
         return res.status(500).send();
       });
     } else {
@@ -81,8 +88,10 @@ module.exports = function () {
         .sort({ date: -1 })
         .populate("type");
       query.then(measurement => {
+        console.log(`/measurements endpoint called: ${req.user} listed user measurements.`);
         return res.status(200).send(measurement);
       }).catch(error => {
+        console.log(`/measurements endpoint called: error while listing user measurements: ${error}`);
         return res.status(500).send();
       });
     } else {
@@ -93,8 +102,10 @@ module.exports = function () {
   router.delete("/:id", isAuthenticated, (req: Request, res: Response) => {
     const query = Measurement.findOneAndDelete({ user: req.user, _id: req.params.id });
     query.then(_ => {
+      console.log(`/measurement/id endpoint called: ${req.user} deleted a measurement.`);
       return res.status(202).send();
     }).catch(error => {
+      console.log(`/measurement/id endpoint called: error while deleting measurements: ${error}`);
       return res.status(500).send();
     });
   });

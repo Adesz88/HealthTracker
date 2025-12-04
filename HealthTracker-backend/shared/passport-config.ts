@@ -9,8 +9,8 @@ function initialize(passport: PassportStatic) {
     const query = User.findOne({ email: email });
     query.then(user => {
       if (user) {
-        user.comparePassword(password, (error, _) => {
-          if (error) {
+        user.comparePassword(password, (error, match) => {
+          if (error || !match) {
             done('Incorrect username or password.');
           } else {
             done(null, user._id);

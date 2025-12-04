@@ -14,15 +14,19 @@ module.exports = function (passport: PassportStatic) {
   router.post("/login", (req: Request, res: Response, next: NextFunction) => {
     passport.authenticate("local", (error: string | null, user: typeof User) => {
       if (error) {
+        console.error(`/users/login endpoint called: login attempt with invalid credentials`);
         res.status(500).send();
       } else {
         if (!user) {
           res.status(400).send("User not found.");
+          console.error("/users/login endpoint called: user not found.");
         } else {
           req.login(user, (err: string | null) => {
             if (err) {
+              console.error(`/users/login endpoint called: error during login: ${err}`);
               res.status(500).send("Internal server error.");
             } else {
+              console.log(`/users/login endpoint called: ${req.body.email} logged in.`);
               res.status(200).send(user);
             }
           });
@@ -33,6 +37,7 @@ module.exports = function (passport: PassportStatic) {
 
   router.delete("/logout", (req: Request, res: Response) => {
     req.logOut(() => {
+      console.log("/users/logout endpoint called");
       return res.status(204).send();
     });
   });
@@ -51,8 +56,10 @@ module.exports = function (passport: PassportStatic) {
         doctorId: null
       });
       user.save().then(data => {
+        console.log(`/users/register endpoint called: new user registered with ${user.email}`);
         res.status(200).send(data);
       }).catch(error => {
+        console.error(`/users/register endpoint called: error during registration: ${error}`);
         res.status(500).send(error);
       });
     } else {
@@ -61,7 +68,7 @@ module.exports = function (passport: PassportStatic) {
   });
 
   router.get("/current", (req: Request, res: Response) => {
-    console.log("/current endpoint called");
+    console.log("/users/current endpoint called");
     if (!req.isAuthenticated()) {
       return res.status(200).send(null);
     }
@@ -94,8 +101,10 @@ module.exports = function (passport: PassportStatic) {
           });
           notification.save().then();
         }
+        console.log(`/users/current endpoint called: ${req.user} updated their profile.`);
         return res.status(200).send();
       }).catch(error => {
+        console.log(`/users/current endpoint called: Error during profile update: ${error}`);
         return res.status(500).send();
       });
     }
@@ -104,8 +113,10 @@ module.exports = function (passport: PassportStatic) {
   router.get("/doctors", isAuthenticated, (req: Request, res: Response) => {
     const query = User.find({ role: ROLES.DOCTOR }).select("firstName lastName _id");
     query.then(doctors => {
+      console.log("/users/doctors endpoint called");
       return res.status(200).send(doctors);
     }).catch(error => {
+      console.log(`/users/doctors endpoint called: error during listing doctors: ${error}`);
       return res.status(500).send();
     });
   });
@@ -113,8 +124,10 @@ module.exports = function (passport: PassportStatic) {
   router.get("/list", isAuthenticated, (req: Request, res: Response, next: NextFunction) => {
     const query = User.find();
     query.then(users => {
+      console.log("/users/list endpoint called");
       return res.status(200).send(users);
     }).catch(error => {
+      console.log(`/users/list endpoint called: error during listing users: ${error}`);
       return res.status(500).send();
     });
   });
