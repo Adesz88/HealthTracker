@@ -29,20 +29,23 @@ const insertNotifications = async () => {
   await Notification.insertMany(notifications);
 }
 
-mongoose.connect(DB_URL).then((_) => {
-  console.log("Connected to DB");
-  Promise.all([deleteAllData()]).then(_ => {
-    Promise.all([insertUsers(), insertMeasurementTypes(), insertMeasurements(), insertNotifications()]).then(_ => {
-      console.log("Database initialised");
-      process.exit();
+const connectWithRetry = () => {
+  mongoose.connect(DB_URL).then((_) => {
+    console.log("Connected to DB");
+    Promise.all([deleteAllData()]).then(_ => {
+      Promise.all([insertUsers(), insertMeasurementTypes(), insertMeasurements(), insertNotifications()]).then(_ => {
+        console.log("Database initialised");
+        process.exit();
+      }).catch(error => {
+        console.log(error);
+      });
     }).catch(error => {
       console.log(error);
     });
   }).catch(error => {
     console.log(error);
+    setTimeout(connectWithRetry, 5000);
   });
-}).catch(error => {
-  console.log(error);
-  return;
-});
+}
 
+connectWithRetry();
