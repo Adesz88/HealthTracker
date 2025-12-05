@@ -30,9 +30,10 @@ const insertNotifications = async () => {
 }
 
 mongoose.connect(DB_URL).then((_) => {
-  console.log("connceted to DB");
+  console.log("Connected to DB");
   Promise.all([deleteAllData()]).then(_ => {
     Promise.all([insertUsers(), insertMeasurementTypes(), insertMeasurements(), insertNotifications()]).then(_ => {
+      console.log("Database initialised");
       process.exit();
     }).catch(error => {
       console.log(error);

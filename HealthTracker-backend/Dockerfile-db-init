@@ -1,0 +1,9 @@
+FROM node:20-alpine
+
+WORKDIR /app
+COPY build ./
+COPY package*.json ./
+
+RUN npm ci --only=production && npm cache clean --force
+
+CMD ["node", "init-database.js"]
